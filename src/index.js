@@ -1,9 +1,7 @@
 var canvas, context;
 var MAX_W, MAX_H;
-
 var particles = [];
 var food = [];
-var friction = 1.1;
 
 window.onload = function () {
     canvas = document.getElementById('canvas');
@@ -22,13 +20,11 @@ window.onload = function () {
 
     }, 1000 / fps);
 
-    // setInterval(function () {
-        // if (particles.length < 100)
-            // createRandom();
+    setInterval(function () {
+        createRandom();
         // createFood();
-    // }, 250);
+    }, 250);
 }
-
 
 function clear() {
     context.clearRect(0, 0, canvas.width, canvas.height);

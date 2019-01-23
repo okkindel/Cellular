@@ -16,8 +16,8 @@ function Particle(x, y) {
     }
 
     this.update = function () {
-        wrap(this);
         addFriction(this);
+        this.wrap();
         this.doRandomMoves();
         this.velx += this.acc * Math.cos(this.angle);
         this.vely += this.acc * Math.sin(this.angle);
@@ -25,11 +25,22 @@ function Particle(x, y) {
         this.y += this.vely;
     }
 
-    this.doRandomMoves = function() {
+    this.doRandomMoves = function () {
         this.angle += (Math.random() * Math.PI / 8 - Math.PI / 16);
         this.angle = this.angle % (2 * Math.PI);
         if (Math.random() * 10 >> 0 == 0)
             this.acc += Math.random() * 2 >> 0;
+    }
+
+    this.wrap = function () {
+        if (this.x < 0)
+            this.x = MAX_W;
+        if (this.x > MAX_W)
+            this.x = 0;
+        if (this.y < 0)
+            this.y = MAX_H;
+        if (this.y > MAX_H)
+            this.y = 0;
     }
 
     this.setForce = function (acc) {
@@ -43,10 +54,5 @@ function Particle(x, y) {
     this.setVel = function (x, y) {
         this.velx = x;
         this.vely = y;
-    }
-
-    this.addVel = function (x, y) {
-        this.velx += x;
-        this.vely -= y;
     }
 }
