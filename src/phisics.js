@@ -9,7 +9,8 @@ function checkColision(par1) {
     particles.forEach(function (par2) {
         if (par1 != par2) {
             // if are going to collide, euclidian
-            if ((Math.pow((par1.x + par1.velx - par2.x), 2) + Math.pow((par1.y + par1.vely - par2.y), 2))
+            if ((Math.pow((par1.x + par1.velx - par2.x), 2)
+                + Math.pow((par1.y + par1.vely - par2.y), 2))
                 < Math.pow((par1.radius + par2.radius), 2)) {
                 let x = Math.abs(par1.x - par2.x);
                 let y = Math.abs(par1.y - par2.y);

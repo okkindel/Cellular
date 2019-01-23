@@ -1,35 +1,42 @@
 function Particle(x, y) {
 
-    this.stop = false;
+    this.color = approximateColor('#102030', '#ffffff', Math.random());
     this.x = x; this.y = y;
-    this.mass = Math.random() * 10 + 20;
-    this.velx = 0;
-    this.vely = 0;
-    this.acc = 0;
-    this.angle = 0;
-    this.color = getRandomColor();
-    this.radius = this.mass;
+    this.velx = 0; this.vely = 0;
+    this.acc = 0; this.angle = 0;
+    this.mass = Math.random() * 20 + 30;
 
     this.show = function () {
         circle(this.x, this.y, this.radius, this.color);
-        line(this.x, this.y, this.x + this.radius * Math.cos(this.angle), this.y + this.radius * Math.sin(this.angle), "white");
+        // an eye
+        circle(this.x + this.radius * Math.cos(this.angle) * 0.7, this.y + this.radius * Math.sin(this.angle) * 0.7, this.radius / 5, "white");
+        // a line
+        // line(this.x, this.y, this.x + this.radius * Math.cos(this.angle), this.y + this.radius * Math.sin(this.angle), "white");
     }
 
     this.update = function () {
-        addFriction(this);
         this.wrap();
         this.doRandomMoves();
+        addFriction(this);
         this.velx += this.acc * Math.cos(this.angle);
         this.vely += this.acc * Math.sin(this.angle);
+        this.angle = this.angle % (2 * Math.PI);
+        this.radius = this.mass;
         this.x += this.velx;
         this.y += this.vely;
+        if (this.mass < 15) {
+            this.die();
+        }
     }
 
     this.doRandomMoves = function () {
+        // chnage angle a little bit
         this.angle += (Math.random() * Math.PI / 8 - Math.PI / 16);
-        this.angle = this.angle % (2 * Math.PI);
-        if (Math.random() * 10 >> 0 == 0)
+        if (Math.random() * 10 >> 0 == 0) {
             this.acc += Math.random() * 2 >> 0;
+            // loose weignt on move
+            this.mass *= 0.99;
+        }
     }
 
     this.wrap = function () {
@@ -41,6 +48,10 @@ function Particle(x, y) {
             this.y = MAX_H;
         if (this.y > MAX_H)
             this.y = 0;
+    }
+
+    this.die = function () {
+        particles.splice(particles.indexOf(this), 1);
     }
 
     this.setForce = function (acc) {
