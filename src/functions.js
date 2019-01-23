@@ -27,11 +27,6 @@ function circle(x, y, r, c) {
 }
 
 function getRandomColor() {
-    // var letters = '0123456789ABCDEF';
-    // var color = '#';
-    // for (var i = 0; i < 6; i++) {
-    //     color += letters[Math.floor(Math.random() * 16)];
-    // }
     color = ((Math.random() * 50) + 10 >> 0) + ((Math.random() * 50) + 10 >> 0) * 100 + ((Math.random() * 50) + 10 >> 0) * 10000;
     color = '#' + color;
     return color;
@@ -40,3 +35,7 @@ function getRandomColor() {
 function radians(degrees) {
     return Math.PI + (degrees * Math.PI / 180);
 }
+
+function degrees(radians) {
+    return (radians * 180 / Math.PI) + 90;
+};

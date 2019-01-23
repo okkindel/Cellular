@@ -2,6 +2,7 @@ var canvas, context;
 var MAX_W, MAX_H;
 
 var particles = [];
+var food = [];
 var friction = 1.1;
 
 window.onload = function () {
@@ -21,9 +22,11 @@ window.onload = function () {
 
     }, 1000 / fps);
 
-    setInterval(function () {
-        createRandom();
-    }, 25);
+    // setInterval(function () {
+        // if (particles.length < 100)
+            // createRandom();
+        // createFood();
+    // }, 250);
 }
 
 
@@ -33,6 +36,9 @@ function clear() {
 
 function draw() {
     particles.forEach(function (item) {
+        item.show();
+    });
+    food.forEach(function (item) {
         item.show();
     });
 }
@@ -46,7 +52,16 @@ function update() {
 
 function createRandom() {
     const particle = new Particle(Math.random() * MAX_W, Math.random() * MAX_H);
-    particle.setForce(Math.random() * 5);
-    particle.setAngle((Math.random() * 360) >> 0);
+    particle.setForce(Math.random() * 20);
+    particle.setAngle(Math.random() * Math.PI * 2);
     particles.push(particle);
 }
+
+function createFood() {
+    const feed = new Food(Math.random() * MAX_W, Math.random() * MAX_H);
+    food.push(feed);
+}
+
+document.addEventListener('mousedown', function () {
+    createRandom();
+});

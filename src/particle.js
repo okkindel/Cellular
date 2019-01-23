@@ -1,29 +1,35 @@
 function Particle(x, y) {
 
+    this.stop = false;
     this.x = x; this.y = y;
-    this.radius = Math.random() * 10 + 5;
+    this.mass = Math.random() * 10 + 20;
     this.velx = 0;
     this.vely = 0;
     this.acc = 0;
     this.angle = 0;
-    this.mass = this.radius;
     this.color = getRandomColor();
+    this.radius = this.mass;
 
     this.show = function () {
         circle(this.x, this.y, this.radius, this.color);
-        line(this.x, this.y, this.x + this.radius * Math.cos(radians(this.angle)), this.y + this.radius * Math.sin(radians(this.angle)), "white");
+        line(this.x, this.y, this.x + this.radius * Math.cos(this.angle), this.y + this.radius * Math.sin(this.angle), "white");
     }
 
     this.update = function () {
         wrap(this);
         addFriction(this);
-        this.velx += Math.round(this.acc * Math.cos(radians(this.angle)));
-        this.vely += Math.round(this.acc * Math.sin(radians(this.angle)));
-        this.x += Math.round(this.velx);
-        this.y += Math.round(this.vely);
+        this.doRandomMoves();
+        this.velx += this.acc * Math.cos(this.angle);
+        this.vely += this.acc * Math.sin(this.angle);
+        this.x += this.velx;
+        this.y += this.vely;
+    }
 
-        this.angle += (Math.random() * 50 - 25) >> 0;
-        this.angle = this.angle % 360;
+    this.doRandomMoves = function() {
+        this.angle += (Math.random() * Math.PI / 8 - Math.PI / 16);
+        this.angle = this.angle % (2 * Math.PI);
+        if (Math.random() * 10 >> 0 == 0)
+            this.acc += Math.random() * 2 >> 0;
     }
 
     this.setForce = function (acc) {
