@@ -1,3 +1,4 @@
+var num_of_cells = 25;
 var canvas, context;
 var MAX_W, MAX_H;
 var particles = [];
@@ -21,11 +22,11 @@ window.onload = function () {
     }, 1000 / fps);
 
     setInterval(function () {
-        if (particles.length < 50) {
-            // createRandomCell();
+        if (particles.length < num_of_cells) {
+            createRandomCell();
             createRandomCrumb();
         }
-    }, 650);
+    }, 250);
 }
 
 function clear() {
@@ -39,6 +40,7 @@ function draw() {
     particles.forEach(function (item) {
         item.show();
     });
+    text("Number of cells: " + num_of_cells, "1rem Arial", canvas.width - 20, 30, 'end', 'black');
 }
 
 function update() {
@@ -63,4 +65,13 @@ function createRandomCrumb() {
 
 document.addEventListener('mousedown', function () {
     createRandomCell();
+});
+
+document.addEventListener('keydown', function () {
+    if (event.keyCode == 82)
+        particles = [];
+    if (event.keyCode == 38 && num_of_cells < 100)
+        num_of_cells++;
+    if (event.keyCode == 40 && num_of_cells >= 0)
+        num_of_cells--;
 });
