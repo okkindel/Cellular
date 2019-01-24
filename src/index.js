@@ -43,10 +43,10 @@ function draw() {
     particles.forEach(function (item) {
         item.show();
     });
-    if (infoVisible)
-        drawInfo();
     if (spectator)
         spectator.showInfo();
+    if (infoVisible)
+        drawInfo();
 }
 
 function update() {
@@ -75,7 +75,7 @@ function drawInfo() {
     text("keeps limit of: " + num_of_cells, "1rem Arial", MAX_W - 200, 70, 'start', 'black');
     text("stats: " + divides + " / " + deaths, "1rem Arial", MAX_W - 200, 90, 'start', 'black');
     text("longest living:", "1rem Arial", MAX_W - 200, 125, 'start', 'black');
-    // draw cell
+    // draw longest living cell
     if (particles.length > 0) {
         const particle = particles.reduce((prev, current) => (prev.born < current.born) ? prev : current);
         circle(MAX_W - 60, 120, 20, particle.color);
