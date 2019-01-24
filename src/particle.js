@@ -28,7 +28,7 @@ function Particle(x, y) {
         if (this.mass < 15) {
             this.die();
         }
-        if (this.mass > 80) {
+        if (this.mass > 80 && cell_division) {
             this.divide();
         }
     }
@@ -50,6 +50,7 @@ function Particle(x, y) {
             const crumb = new Food(this.x + this.radius * Math.cos(angle), this.y + this.radius * Math.sin(angle));
             food.push(crumb);
         }
+        deaths++;
     }
 
     this.divide = function () {
@@ -59,6 +60,7 @@ function Particle(x, y) {
         child.mass = this.mass;
         particles.push(child);
         this.divides++;
+        divides++;
     }
 
     this.showInfo = function () {
