@@ -35,7 +35,11 @@ function checkColision(par1) {
                 } else if (par1.x > par2.x || par1.y < par2.y) {
                     par1.angle -= Math.PI / 2;
                     par2.angle += Math.PI / 2;
+                } else if (par1.x == par2.x && par1.y == par2.y) {
+                    par1.angle = Math.random() * Math.PI * 2;
+                    par2.angle = Math.random() * Math.PI * 2;
                 }
+
                 par1.setVel(0, 0);
                 par2.setVel(0, 0);
             }

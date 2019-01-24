@@ -1,5 +1,6 @@
 function Particle(x, y) {
 
+    this.born = new Date(); this.divides = 0;
     this.color = approximateColor('#102030', '#ffffff', Math.random());
     this.x = x; this.y = y;
     this.velx = 0; this.vely = 0;
@@ -15,9 +16,9 @@ function Particle(x, y) {
     }
 
     this.update = function () {
-        this.wrap();
-        this.doRandomMoves();
+        wrap(this);
         addFriction(this);
+        this.doRandomMoves();
         this.velx += this.acc * Math.cos(this.angle);
         this.vely += this.acc * Math.sin(this.angle);
         this.angle = this.angle % (2 * Math.PI);
@@ -26,6 +27,9 @@ function Particle(x, y) {
         this.y += this.vely;
         if (this.mass < 15) {
             this.die();
+        }
+        if (this.mass > 80) {
+            this.divide();
         }
     }
 
@@ -39,19 +43,30 @@ function Particle(x, y) {
         }
     }
 
-    this.wrap = function () {
-        if (this.x < 0)
-            this.x = MAX_W;
-        if (this.x > MAX_W)
-            this.x = 0;
-        if (this.y < 0)
-            this.y = MAX_H;
-        if (this.y > MAX_H)
-            this.y = 0;
-    }
-
     this.die = function () {
         particles.splice(particles.indexOf(this), 1);
+        for (let i = 0; i < this.mass; i++) {
+            const angle = Math.random() * 2 * Math.PI;
+            const crumb = new Food(this.x + this.radius * Math.cos(angle), this.y + this.radius * Math.sin(angle));
+            food.push(crumb);
+        }
+    }
+
+    this.divide = function () {
+        const child = new Particle(this.x, this.y);
+        this.mass /= 2;
+        child.color = this.color;
+        child.mass = this.mass;
+        particles.push(child);
+        this.divides++;
+    }
+
+    this.showInfo = function () {
+        rect(20, 20, 200, 70, "white", "black");
+        text("time living: " + Math.round((new Date() - this.born) / 10) / 100, "1rem Arial", 40, 50, 'start', 'black')
+        text("number of divides: " + this.divides, "1rem Arial", 40, 70, 'start', 'black')
+        if (this == spectator)
+            frame(this.x, this.y, this.radius, "#123");
     }
 
     this.setForce = function (acc) {
@@ -66,4 +81,5 @@ function Particle(x, y) {
         this.velx = x;
         this.vely = y;
     }
+
 }

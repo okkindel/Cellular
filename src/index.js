@@ -1,6 +1,8 @@
-var num_of_cells = 25;
+var num_of_cells = 1;
 var canvas, context;
 var MAX_W, MAX_H;
+var spectator = null;
+var infoVisible = true;
 var particles = [];
 var food = [];
 
@@ -24,9 +26,9 @@ window.onload = function () {
     setInterval(function () {
         if (particles.length < num_of_cells) {
             createRandomCell();
-            createRandomCrumb();
         }
-    }, 250);
+        createRandomCrumb();
+    }, 200);
 }
 
 function clear() {
@@ -40,7 +42,10 @@ function draw() {
     particles.forEach(function (item) {
         item.show();
     });
-    text("Number of cells: " + num_of_cells, "1rem Arial", canvas.width - 20, 30, 'end', 'black');
+    if (infoVisible)
+        drawInfo();
+    if (spectator)
+        spectator.showInfo();
 }
 
 function update() {
@@ -63,15 +68,34 @@ function createRandomCrumb() {
     food.push(crumb);
 }
 
+function drawInfo() {
+    rect(MAX_W - 220, 20, 200, 110, "white", "black");
+    text("number of cells: " + particles.length, "1rem Arial", MAX_W - 200, 50, 'start', 'black');
+    text("keeps limit of: " + num_of_cells, "1rem Arial", MAX_W - 200, 70, 'start', 'black');
+    text("longest living:", "1rem Arial", MAX_W - 200, 105, 'start', 'black');
+    // draw cell
+    if (particles.length > 0) {
+        const particle = particles.reduce((prev, current) => (prev.born < current.born) ? prev : current);
+        circle(MAX_W - 60, 100, 20, particle.color);
+        circle(MAX_W - 60 + 20 * Math.cos(particle.angle) * 0.7, 100 + 20 * Math.sin(particle.angle) * 0.7, 3, "white");
+    }
+}
+
 document.addEventListener('mousedown', function () {
-    createRandomCell();
+    checkClick(event.x, event.y);
 });
 
 document.addEventListener('keydown', function () {
+    if (event.keyCode == 72)
+        createRandomCrumb();
+    if (event.keyCode == 73)
+        infoVisible = !infoVisible;
+    if (event.keyCode == 78)
+        createRandomCell();
     if (event.keyCode == 82)
         particles = [];
     if (event.keyCode == 38 && num_of_cells < 100)
         num_of_cells++;
-    if (event.keyCode == 40 && num_of_cells >= 0)
+    if (event.keyCode == 40 && num_of_cells > 0)
         num_of_cells--;
 });
