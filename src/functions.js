@@ -68,7 +68,6 @@ function generateHex(r, g, b) {
     g = g.toString(16);
     b = b.toString(16);
 
-    // to address problem mentioned by Alexis Wilke:
     while (r.length < 2) { r = "0" + r; }
     while (g.length < 2) { g = "0" + g; }
     while (b.length < 2) { b = "0" + b; }

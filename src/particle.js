@@ -64,11 +64,11 @@ function Particle(x, y) {
     }
 
     this.showInfo = function () {
+        if (this == spectator)
+            frame(this.x, this.y, this.radius, "#123");
         rect(20, 20, 200, 70, "white", "black");
         text("time living: " + Math.round((new Date() - this.born) / 10) / 100, "1rem Arial", 40, 50, 'start', 'black')
         text("number of divides: " + this.divides, "1rem Arial", 40, 70, 'start', 'black')
-        if (this == spectator)
-            frame(this.x, this.y, this.radius, "#123");
     }
 
     this.setForce = function (acc) {
